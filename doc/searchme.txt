@@ -1,0 +1,146 @@
+*searchme.txt* Plugin for web search from Vim/Neovim
+
+Author: clouduan<https://github.com/clouduan>
+License: Same terms as Vim itself (see |license|)
+
+CONTENTS                                        *vim-searchme-contents*
+
+Introduction                                    |vim-searchme-introduction|
+Installation                                    |vim-searchme-installation|
+Variables                                       |vim-searchme-variables|
+Commands                                        |vim-searchme-commands|
+Config example                                  |*vim-searchme-config-example*|
+About                                           |vim-searchme-about|
+
+==============================================================================
+INTRODUCTION                                    *vim-search-me-introduction*
+
+A Neovim plugin to search the web for text selected in vim. This is especially
+
+useful when you want to search the text under the cursor. You don't have to 
+
+open your browser and search, it will open your browser automatically.
+
+This plugin supports many search engines such as Google, GitHub and so on.
+
+You can also add your own search engine, see `g:query`
+
+==============================================================================
+INSTALLATION                                    *vim-searchme-installation*
+
+Plugin manager was recommended.
+
+- If you don't already use a plugin manager, I recommend vim-plug
+
+vim-plug
+>
+  Plug 'clouduan/vim-searchme'
+  :PlugInstall
+<
+
+Vundle
+>
+  Plugin 'clouduan/vim-searchme'
+  :PluginInstall
+<
+
+
+==============================================================================
+VARIABLES                                       *vim-searchme-variables*
+
+g:browser_path                               *g:browser_path*
+
+    Your browser executable file path
+
+    Default value: 
+        Windows: 
+            "C://Program Files (x86)/Google/Chrome/Application/chrome.exe"
+        Linux or Mac OS:
+            "google-chrome"
+
+g:search_engine                              *g:search_engine*
+
+    Search engine name
+
+    Default value: "google"
+
+g:query                                      *g:query*
+
+    Search engine query url
+
+    Default value: 
+        let g:query = {
+            \ 'google':'https://google.com/search\?q\={query}',
+            \ 'github':'https://github.com/search\?q\={query}',
+            \ 'stackoverflow':'https://stackoverflow.com/search\?q\={query}',
+            \ 'bilibili':'http://search.bilibili.com/all\?keyword\={query}',
+            \ 'askubuntu': 'https://askubuntu.com/search\?q\={query}',
+            \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
+            \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
+            \ 'twitter-search': 'https://twitter.com/search/{query}',
+            \ 'twitter-user': 'https://twitter.com/{query}',
+            \ 'reddit':'https://www.reddit.com/search\?q\={query}',
+            \ 'youtube':'https://www.youtube.com/results\?search_query\={query}\&page\=\&utm_source\=opensearch',
+            \ 'zhihu':'https://www.zhihu.com/search\?q\={query}',
+            \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}'
+            \}
+
+==============================================================================
+COMMANDS                                         *vim-searchme-commands*
+
+*SearchCurrentText* 
+
+    Search text under the cursor
+
+*SearchVisualText*  
+
+    Search selected text
+
+*Search [search engine] {text}*                
+
+    Search text using specified search engine, otherwise using the default search engine
+
+    For example: Search github vim as ide
+
+*SearchInGoogle {text}*        
+    
+    Search in Google
+
+*SearchInGithub {text}*        
+
+    Search in GitHub
+
+*SearchInStackoverflow {text}*
+    
+    Search in Stackoverflow
+
+*SearchInBilibili {text}* 
+    
+    Search in Bilibili
+
+*SearchInZhihu {text}*         
+
+    Search in Zhihu
+
+*SearchInBaidu {text}*         
+
+    Search in Baidu
+
+You can define more commands by yourself.
+
+==============================================================================
+CONFIG EXAMPLE                                  *vim-searchme-config-example*
+
+noremap  <Leader>ss :<C-u>SearchCurrentText<CR>
+vnoremap <Leader>sv :<C-u>SearchVisualText<CR>
+noremap  <Leader>sm :Search<space>
+
+==============================================================================
+ABOUT                                           *vim-search-me-about*
+
+You can get the latest version, send me a pull request or report a bug on GitHub:
+
+https://github.com/clouduan/vim-searchme
+
+==============================================================================
+vim:tw=80:ts=8:ft=help:norl
