@@ -1,7 +1,7 @@
 " @Author: clouduan
 " @Date: 2018-08-22 17:51:06
 " @Last Modified by: clouduan
-" @Last Modified time: 2018-08-22 19:40:50
+" @Last Modified time: 2018-08-24
 function! s:search_it(keyword, ...)
     if !a:0 == 0
         let s:search_engine = tolower(a:1)
@@ -14,7 +14,15 @@ function! s:search_it(keyword, ...)
         echoerr "Unknow search engine."
     endif
     let s:url = substitute(s:query_url, '{query}', a:keyword, 'g')
-    exec "silent !" . g:browser_path . " " . s:url
+
+    let cmd = g:browser_path . " " . s:url
+    if exists('*jobstart')
+        call jobstart(cmd)
+    elseif exists('*job_start')
+        call job_start(cmd)
+    else
+        call system(cmd)
+    endif
 endfunction
 
 function! searchme#search_in(...)
