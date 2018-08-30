@@ -15,7 +15,17 @@ function! s:search_it(keyword, ...)
     endif
     let s:url = substitute(s:query_url, '{query}', a:keyword, 'g')
 
-    let cmd = g:browser_path . " " . s:url
+    " windows(mingw)
+    if has('win32') || has('win64') || has('win32unix')
+        let cmd = 'start rundll32 url.dll,FileProtocolHandler ' . s:url
+    elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
+        let cmd = 'open' . s:url
+    elseif executable('xdg-open')
+        let cmd = 'xdg-open ' . s:url
+    else
+        echoerr "No browser path found, please contact the developer."
+    endif
+
     if exists('*jobstart')
         call jobstart(cmd)
     elseif exists('*job_start')
