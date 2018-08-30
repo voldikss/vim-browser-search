@@ -1,7 +1,7 @@
 # vim-searchme
 
 A Neovim plugin to search the web for text selected in vim. This is especially
-useful when you want to search the text under the cursor. 
+useful when you want to search the text under the cursor.
 
 This plugin supports many search engines such as Google, GitHub and so on.
 You can also add your own search engine, see [`g:query`](#Variables)
@@ -21,7 +21,6 @@ noremap  <Leader>ss :<C-u>SearchCurrentText<CR>
 vnoremap <Leader>sv :<C-u>SearchVisualText<CR>
 noremap  <Leader>sm :Search<Space>
 
-let g:browser_path = 'your browser executable file path'
 let g:search_engine = 'your default search engine'
 ```
 
@@ -49,21 +48,9 @@ You can define more commands by yourself.
 
 ### Variables
 
--   `g:browser_path` Path of the browser executable file
-
-    Default value on Windows:
-
-    ```vim
-    let g:browser_path = 'C://Program Files (x86)/Google/Chrome/Application/chrome.exe'
-    ```
-
-    on Linux or Mac OS:
-
-    ```vim
-    let g:browser = '/usr/bin/google-chrome'
-    ```
-
 -   `g:query_map` Search engine names and query urls
+
+    Default:
     ```vim
     let g:query_map = {
         \ 'google':'https://google.com/search\?q\={query}',
