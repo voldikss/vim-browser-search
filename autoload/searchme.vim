@@ -19,7 +19,7 @@ function! s:search_it(keyword, ...)
     if has('win32') || has('win64') || has('win32unix')
         let cmd = 'start rundll32 url.dll,FileProtocolHandler ' . s:url
     elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
-        let cmd = 'open' . s:url
+        let cmd = 'open ' . s:url
     elseif executable('xdg-open')
         let cmd = 'xdg-open ' . s:url
     else

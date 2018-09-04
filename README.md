@@ -1,12 +1,14 @@
 # vim-searchme
 
-A Neovim plugin to search the web for text selected in vim. This is especially
+A Vim/Neovim plugin to search the web for text selected in vim. This is especially
 useful when you want to search the text under the cursor.
 
 This plugin supports many search engines such as Google, GitHub and so on.
 You can also add your own search engine, see [`g:query`](#Variables)
 
 ### Install
+
+You must have Neovim/Vim-8.0+ with job control API.
 
 Preferred plugin manager is [vim-plug](https://github.com/junegunn/vim-plug):
 
