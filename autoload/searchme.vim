@@ -71,3 +71,17 @@ function! searchme#search_visual_text()
     endtry
     call <SID>search_it(s:select_text)
 endfunction
+
+function! searchme#complete(arg_lead, cmd_line, cursor_pos)
+    let l:cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
+    let l:args = split(l:cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
+    call remove(l:args, 0) " Remove the command's name
+    if len(l:args) == 1 " At search engine's position
+        let l:candidates = keys(g:query_map)
+        let l:prefix = l:args[0]
+        if !empty(l:prefix) " If l:prefix is empty we want to return all options
+            let l:candidates = filter(keys(g:query_map), 'v:val[:len(l:prefix) - 1] == l:prefix')
+        endif
+        return sort(l:candidates)
+    endif
+endfunction
