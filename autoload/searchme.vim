@@ -13,15 +13,16 @@ function! s:search_it(keyword, ...)
     else
         echoerr "Unknow search engine."
     endif
-    let s:url = substitute(s:query_url, '{query}', a:keyword, 'g')
+    let l:url = substitute(s:query_url, '{query}', a:keyword, 'g')
+    let l:url = substitute(l:url, ' ', '%20', 'g')
 
     " windows(mingw)
     if has('win32') || has('win64') || has('win32unix')
-        let cmd = 'start rundll32 url.dll,FileProtocolHandler ' . s:url
+        let cmd = 'start rundll32 url.dll,FileProtocolHandler ' . l:url
     elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
-        let cmd = 'open ' . s:url
+        let cmd = 'open ' . l:url
     elseif executable('xdg-open')
-        let cmd = 'xdg-open ' . s:url
+        let cmd = 'xdg-open ' . l:url
     else
         echoerr "No browser path found, please contact the developer."
     endif
