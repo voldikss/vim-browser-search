@@ -28,9 +28,9 @@ let g:search_engine = 'your default search engine'
 
 ### Commands
 
--   `SearchCurrentText` Search text under the cursor
+-   `SearchCurrentText [search engine]` Search text under the cursor
 
--   `SearchVisualText` Search selected text
+-   `SearchVisualText [search engine]` Search selected text
 
 -   `Search [search engine] {text}` Search text (using specified search engine)
 

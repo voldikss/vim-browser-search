@@ -2,18 +2,13 @@
 " @Date: 2018-08-22 17:51:06
 " @Last Modified by: clouduan
 " @Last Modified time: 2018-08-24
-function! s:search_it(keyword, ...)
-    if !a:0 == 0
-        let s:search_engine = tolower(a:1)
-    else
-        let s:search_engine = tolower(g:search_engine)
-    endif
-    if has_key(g:query_map, s:search_engine)
-        let s:query_url = g:query_map[s:search_engine]
+function! s:search_it(keyword, search_engine)
+    if has_key(g:query_map, a:search_engine)
+        let l:query_url = g:query_map[a:search_engine]
     else
         echoerr "Unknow search engine."
     endif
-    let l:url = substitute(s:query_url, '{query}', a:keyword, 'g')
+    let l:url = substitute(l:query_url, '{query}', a:keyword, 'g')
     let l:url = substitute(l:url, ' ', '%20', 'g')
 
     " windows(mingw)
@@ -39,38 +34,48 @@ endfunction
 function! searchme#search_in(...)
     " User can input which search_engine to use
     if a:0 == 1
-        let s:text = a:1
-        let s:pos = match(s:text,' ')
+        let l:text = a:1
+        let l:pos = match(l:text,' ')
         " No search engine specified, will use the default
-        if s:pos < 0
+        if l:pos < 0
             echom "Use default engine."
-            let s:search_engine = g:search_engine
-            let s:keyword = s:text
+            let l:search_engine = g:search_engine
+            let l:keyword = l:text
         else
-            let s:search_engine = s:text[: s:pos-1]
-            let s:keyword = s:text[s:pos+1 :]
+            let l:search_engine = l:text[: l:pos-1]
+            let l:keyword = l:text[l:pos+1 :]
         endif
     else
-        let s:keyword = a:1
-        let s:search_engine = a:2
+        let l:keyword = a:1
+        let l:search_engine = a:2
     endif
-    call <SID>search_it(s:keyword, s:search_engine)
+    call <SID>search_it(l:keyword, l:search_engine)
 endfunction
 
-function! searchme#search_current_text()
-    let s:keyword = expand("<cword>")
-    call <SID>search_it(s:keyword)
+function! searchme#search_current_text(...)
+    if a:0 == 0
+        let l:search_engine = tolower(g:search_engine)
+    else
+        let l:search_engine = tolower(a:1)
+    endif
+    let l:keyword = expand("<cword>")
+    call <SID>search_it(l:keyword, l:search_engine)
 endfunction
 
-function! searchme#search_visual_text()
+function! searchme#search_visual_text(...)
+    if a:0 == 0
+        let l:search_engine = tolower(g:search_engine)
+    else
+        let l:search_engine = tolower(a:1)
+    endif
     try
-        let s:save_tmp = @a
+        let l:save_tmp = @a
         normal! gv"ay
-        let s:select_text=@a
+        let l:select_text=@a
     finally
-        let @a = s:save_tmp
+        let @a = l:save_tmp
     endtry
-    call <SID>search_it(s:select_text)
+    call <SID>search_it(l:select_text, l:search_engine)
 endfunction
 
 function! searchme#complete(arg_lead, cmd_line, cursor_pos)
