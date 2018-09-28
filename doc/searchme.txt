@@ -88,11 +88,11 @@ g:query                                      *g:query*
 ==============================================================================
 COMMANDS                                         *vim-searchme-commands*
 
-*SearchCurrentText* 
+*SearchCurrentText [search engine]* 
 
     Search text under the cursor
 
-*SearchVisualText*  
+*SearchVisualText [search engine]*  
 
     Search selected text
 
