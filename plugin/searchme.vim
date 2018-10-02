@@ -1,44 +1,38 @@
-" @Author: clouduan
+" @Author: VoldikSS
 " @Date: 2018-08-22 17:50:56
-" @Last Modified by: clouduan
-" @Last Modified time: 2018-08-22 21:10:28
-if !exists('g:browser_path')
-    let g:browser_path = "/usr/bin/google-chrome"
-endif
+" @Last Modified by: VoldikSS
+" @Last Modified time: 2018-10-02
 
 if !exists('g:search_engine')
-    if has('win32') || has('win64')
-        let g:search_engine = 'C://Program Files (x86)/Google/Chrome/Application/chrome.exe'
-    elseif has('unix')
-        let g:search_engine = "google"
-    endif
+    let g:search_engine = "google"
 endif
 
 if !exists('g:query_map')
     let g:query_map = {
                 \ 'google':'https://google.com/search\?q\={query}',
+                \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
+                \ 'bing': 'https://www.bing.com/search?q\={query}',
+                \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}',
                 \ 'github':'https://github.com/search\?q\={query}',
                 \ 'stackoverflow':'https://stackoverflow.com/search\?q\={query}',
-                \ 'bilibili':'http://search.bilibili.com/all\?keyword\={query}',
                 \ 'askubuntu': 'https://askubuntu.com/search\?q\={query}',
                 \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
-                \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
+                \ 'reddit':'https://www.reddit.com/search\?q\={query}',
                 \ 'twitter-search': 'https://twitter.com/search/{query}',
                 \ 'twitter-user': 'https://twitter.com/{query}',
-                \ 'reddit':'https://www.reddit.com/search\?q\={query}',
-                \ 'youtube':'https://www.youtube.com/results\?search_query\={query}\&page\=\&utm_source\=opensearch',
                 \ 'zhihu':'https://www.zhihu.com/search\?q\={query}',
-                \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}'
+                \ 'bilibili':'http://search.bilibili.com/all\?keyword\={query}',
+                \ 'youtube':'https://www.youtube.com/results\?search_query\={query}\&page\=\&utm_source\=opensearch'
                 \}
 endif
 
-command! -complete=customlist,searchme#complete -nargs=?        SearchCurrentText :call searchme#search_current_text(<f-args>)
-command! -complete=customlist,searchme#complete -nargs=? -range SearchVisualText  :call searchme#search_visual_text(<f-args>)
+command! -complete=customlist,searchme#Complete -nargs=?        SearchCurrentText :call searchme#SearchCurrentText(<f-args>)
+command! -complete=customlist,searchme#Complete -nargs=? -range SearchVisualText  :call searchme#SearchVisualText(<f-args>)
 
-command! -complete=customlist,searchme#complete -nargs=+ Search                :call searchme#search_in(<q-args>)
-command!                                        -nargs=+ SearchInGoogle        :call searchme#search_in(<q-args>, 'google')
-command!                                        -nargs=+ SearchInGithub        :call searchme#search_in(<q-args>, 'github')
-command!                                        -nargs=+ SearchInStackoverflow :call searchme#search_in(<q-args>, 'stackoverflow')
-command!                                        -nargs=+ SearchInBilibili      :call searchme#search_in(<q-args>, 'bilibili')
-command!                                        -nargs=+ SearchInZhihu         :call searchme#search_in(<q-args>, 'zhihu')
-command!                                        -nargs=+ SearchInBaidu         :call searchme#search_in(<q-args>, 'baidu')
+command! -complete=customlist,searchme#Complete -nargs=+        Search            :call searchme#SearchIn(<q-args>)
+command!                                        -nargs=+        SearchInGoogle    :call searchme#SearchIn(<q-args>, 'google')
+command!                                        -nargs=+        SearchInBaidu     :call searchme#SearchIn(<q-args>, 'baidu')
+command!                                        -nargs=+        SearchInGithub    :call searchme#SearchIn(<q-args>, 'github')
+command!                                        -nargs=+        SearchInSO        :call searchme#SearchIn(<q-args>, 'stackoverflow')
+command!                                        -nargs=+        SearchInBilibili  :call searchme#SearchIn(<q-args>, 'bilibili')
+command!                                        -nargs=+        SearchInZhihu     :call searchme#SearchIn(<q-args>, 'zhihu')
