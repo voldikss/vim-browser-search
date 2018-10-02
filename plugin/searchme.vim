@@ -32,8 +32,8 @@ if !exists('g:query_map')
                 \}
 endif
 
-command! -complete=customlist,searchme#complete -nargs=? SearchCurrentText :call searchme#search_current_text(<f-args>)
-command! -complete=customlist,searchme#complete -nargs=? SearchVisualText  :call searchme#search_visual_text(<f-args>)
+command! -complete=customlist,searchme#complete -nargs=?        SearchCurrentText :call searchme#search_current_text(<f-args>)
+command! -complete=customlist,searchme#complete -nargs=? -range SearchVisualText  :call searchme#search_visual_text(<f-args>)
 
 command! -complete=customlist,searchme#complete -nargs=+ Search                :call searchme#search_in(<q-args>)
 command!                                        -nargs=+ SearchInGoogle        :call searchme#search_in(<q-args>, 'google')
