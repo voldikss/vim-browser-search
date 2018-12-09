@@ -1,7 +1,7 @@
 " @Author: VoldikSS
 " @Date: 2018-08-22 17:50:56
 " @Last Modified by: VoldikSS
-" @Last Modified time: 2018-10-02
+" @Last Modified time: 2018-12-09
 
 if !exists('g:search_engine')
     let g:search_engine = "google"
@@ -10,6 +10,7 @@ endif
 if !exists('g:query_map')
     let g:query_map = {
                 \ 'google':'https://google.com/search\?q\={query}',
+                \ 'mathematica':'https://www.wolframalpha.com/input/?i={query}',
                 \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
                 \ 'bing': 'https://www.bing.com/search?q\={query}',
                 \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}',
@@ -31,6 +32,7 @@ command! -complete=customlist,searchme#Complete -nargs=? -range SearchVisualText
 
 command! -complete=customlist,searchme#Complete -nargs=+        Search            :call searchme#SearchIn(<q-args>)
 command!                                        -nargs=+        SearchInGoogle    :call searchme#SearchIn(<q-args>, 'google')
+command!                                        -nargs=+        SearchInMMA       :call searchme#SearchIn(<q-args>, 'mathematica')
 command!                                        -nargs=+        SearchInBaidu     :call searchme#SearchIn(<q-args>, 'baidu')
 command!                                        -nargs=+        SearchInGithub    :call searchme#SearchIn(<q-args>, 'github')
 command!                                        -nargs=+        SearchInSO        :call searchme#SearchIn(<q-args>, 'stackoverflow')
