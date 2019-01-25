@@ -1,16 +1,32 @@
-" @Author: VoldikSS
+" @Author: voldikss
 " @Date: 2018-08-22 17:51:06
-" @Last Modified by: VoldikSS
-" @Last Modified time: 2018-10-02
+" @Last Modified by: voldikss
+" @Last Modified time: 2019-01-25 17:36:58
 
-function! s:Search(keyword, search_engine)
+function! searchme#Start(type)
+    let l:save_tmp = @"
+
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    let l:select_text = @"
+    let @" = l:save_tmp
+
+    call <SID>Search(l:select_text, g:search_engine)
+endfunction
+
+function! s:Search(text, search_engine)
     if has_key(g:query_map, a:search_engine)
         let l:query_url = g:query_map[a:search_engine]
     else
-        echoerr "Unknow search engine."
+        echoerr "Unknown search engine."
         return
     endif
- 
     " Escape for use string as shell command argument
     let l:text = shellescape(a:text)
 
@@ -28,7 +44,7 @@ function! s:Search(keyword, search_engine)
         echoerr "Browser not found."
     endif
 
-    " Async
+    " Async search
     if exists('*jobstart')
         call jobstart(cmd)
     elseif exists('*job_start')
@@ -76,11 +92,11 @@ function! searchme#SearchVisualText(...)
         let l:search_engine = tolower(trim(a:1))
     endif
     try
-        let l:save_tmp = @a
+        let l:save_tmp = @"
         normal! gv"ay
-        let l:select_text=@a
+        let l:select_text=@"
     finally
-        let @a = l:save_tmp
+        let @" = l:save_tmp
     endtry
     call <SID>Search(l:select_text, l:search_engine)
 endfunction
