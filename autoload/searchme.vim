@@ -10,7 +10,11 @@ function! s:Search(keyword, search_engine)
         echoerr "Unknow search engine."
         return
     endif
-    let l:url = substitute(l:query_url, '{query}', a:keyword, 'g')
+ 
+    " Escape for use string as shell command argument
+    let l:text = shellescape(a:text)
+
+    let l:url = substitute(l:query_url, '{query}', l:text, 'g')
     let l:url = substitute(l:url, ' ', '%20', 'g')
 
     " Windows(including mingw)
@@ -43,7 +47,7 @@ function! searchme#SearchIn(...)
         if l:pos < 0
             echom "Use default engine."
             let l:search_engine = g:search_engine
-            let l:keyword = l:text
+            let l:keyword = trim(l:text)
         else
             let l:search_engine = l:text[: l:pos-1]
             let l:keyword = l:text[l:pos+1 :]
@@ -59,7 +63,7 @@ function! searchme#SearchCurrentText(...)
     if a:0 == 0
         let l:search_engine = tolower(g:search_engine)
     else
-        let l:search_engine = tolower(a:1)
+        let l:search_engine = tolower(trim(a:1))
     endif
     let l:keyword = expand("<cword>")
     call <SID>Search(l:keyword, l:search_engine)
@@ -69,7 +73,7 @@ function! searchme#SearchVisualText(...)
     if a:0 == 0
         let l:search_engine = tolower(g:search_engine)
     else
-        let l:search_engine = tolower(a:1)
+        let l:search_engine = tolower(trim(a:1))
     endif
     try
         let l:save_tmp = @a
