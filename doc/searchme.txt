@@ -40,21 +40,22 @@ g:query_map                                      *g:query_map*
 
     Default value:
         let g:query_map = {
-            \ 'google':'https://google.com/search\?q\={query}',
-            \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
-            \ 'bing': 'https://www.bing.com/search?q\={query}',
-            \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}',
-            \ 'github':'https://github.com/search\?q\={query}',
-            \ 'stackoverflow':'https://stackoverflow.com/search\?q\={query}',
-            \ 'askubuntu': 'https://askubuntu.com/search\?q\={query}',
-            \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
-            \ 'reddit':'https://www.reddit.com/search\?q\={query}',
-            \ 'twitter-search': 'https://twitter.com/search/{query}',
-            \ 'twitter-user': 'https://twitter.com/{query}',
-            \ 'zhihu':'https://www.zhihu.com/search\?q\={query}',
-            \ 'bilibili':'http://search.bilibili.com/all\?keyword\={query}',
-            \ 'youtube':'https://www.youtube.com/results\?search_query\={query}\&page\=\&utm_source\=opensearch'
-            \}
+                \ 'google':'https://google.com/search?q={query}',
+                \ 'mathematica':'https://www.wolframalpha.com/input/?i={query}',
+                \ 'duckduckgo': 'https://duckduckgo.com/?q={query}',
+                \ 'bing': 'https://www.bing.com/search?q={query}',
+                \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd={query}',
+                \ 'github':'https://github.com/search?q={query}',
+                \ 'stackoverflow':'https://stackoverflow.com/search?q={query}',
+                \ 'askubuntu': 'https://askubuntu.com/search?q={query}',
+                \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
+                \ 'reddit':'https://www.reddit.com/search?q={query}',
+                \ 'twitter-search': 'https://twitter.com/search/{query}',
+                \ 'twitter-user': 'https://twitter.com/{query}',
+                \ 'zhihu':'https://www.zhihu.com/search?q={query}',
+                \ 'bilibili':'http://search.bilibili.com/all?keyword={query}',
+                \ 'youtube':'https://www.youtube.com/results?search_query={query}&page=&utm_source=opensearch'
+                \}
 
 ==============================================================================
 USAGE                                  *vim-searchme-usage*
@@ -64,6 +65,8 @@ USAGE                                  *vim-searchme-usage*
     Use <Leader>s in operator-pending mode to search a word (for example, <Leader>saw to search a word). <Leader>s in visual mode to search for what you have selected. (for example, if you selected strings inside a bracket using vas, just type <Leader>s to search it).
 
     Also you may try <Leader>S, with which you can input what you want to search.
+
+    **Note**: If the selection contains a URL, the plugin will open the url directly instead of searching it.
 
 - Commands~
 

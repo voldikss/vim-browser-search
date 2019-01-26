@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2018-08-22 17:50:56
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-01-25 17:37:22
+" @Last Modified time: 2019-01-26 14:53:09
 
 if exists('g:did_load_searchme')
     finish
@@ -12,21 +12,21 @@ if !exists('g:search_engine')
 endif
 
 let g:query_map = {
-        \ 'google':'https://google.com/search\?q\={query}',
+        \ 'google':'https://google.com/search?q={query}',
         \ 'mathematica':'https://www.wolframalpha.com/input/?i={query}',
-        \ 'duckduckgo': 'https://duckduckgo.com/\?q\={query}',
-        \ 'bing': 'https://www.bing.com/search?q\={query}',
-        \ 'baidu':'https://www.baidu.com/s\?ie\=UTF-8\&wd\={query}',
-        \ 'github':'https://github.com/search\?q\={query}',
-        \ 'stackoverflow':'https://stackoverflow.com/search\?q\={query}',
-        \ 'askubuntu': 'https://askubuntu.com/search\?q\={query}',
+        \ 'duckduckgo': 'https://duckduckgo.com/?q={query}',
+        \ 'bing': 'https://www.bing.com/search?q={query}',
+        \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd={query}',
+        \ 'github':'https://github.com/search?q={query}',
+        \ 'stackoverflow':'https://stackoverflow.com/search?q={query}',
+        \ 'askubuntu': 'https://askubuntu.com/search?q={query}',
         \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
-        \ 'reddit':'https://www.reddit.com/search\?q\={query}',
+        \ 'reddit':'https://www.reddit.com/search?q={query}',
         \ 'twitter-search': 'https://twitter.com/search/{query}',
         \ 'twitter-user': 'https://twitter.com/{query}',
-        \ 'zhihu':'https://www.zhihu.com/search\?q\={query}',
-        \ 'bilibili':'http://search.bilibili.com/all\?keyword\={query}',
-        \ 'youtube':'https://www.youtube.com/results\?search_query\={query}\&page\=\&utm_source\=opensearch'
+        \ 'zhihu':'https://www.zhihu.com/search?q={query}',
+        \ 'bilibili':'http://search.bilibili.com/all?keyword={query}',
+        \ 'youtube':'https://www.youtube.com/results?search_query={query}&page=&utm_source=opensearch'
         \}
 
 " add user added query maps

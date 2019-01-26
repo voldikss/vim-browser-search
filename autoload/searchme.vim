@@ -1,7 +1,54 @@
 " @Author: voldikss
 " @Date: 2018-08-22 17:51:06
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-01-25 17:36:58
+" @Last Modified time: 2019-01-26 14:52:35
+
+function! s:Search(text, search_engine)
+    if has_key(g:query_map, a:search_engine)
+        let l:query_url = g:query_map[a:search_engine]
+    else
+        echoerr "Unknown search engine."
+        return
+    endif
+
+    " Escape for use string as shell command argument
+    let l:text = shellescape(a:text)
+
+    " Whether selected text contains URL
+    let l:url_in_text = matchstr(l:text, 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*')
+
+    if l:url_in_text !=# ''
+        let l:url = l:url_in_text
+    else
+        let l:url = substitute(l:query_url, '{query}', l:text, 'g')
+    endif
+
+    " Get rid of wouble-quote, single-quote, back-quote, back-slash, whitespace
+    let l:url = substitute(l:url, "[\"'`]"," ",'g')
+    let l:url = substitute(l:url, '\s\+',"%20",'g')
+    let l:url = trim(l:url,"%20")
+    let l:url = trim(l:url,"\\")
+
+    " Windows(including mingw)
+    if has('win32') || has('win64') || has('win32unix')
+        let l:cmd = 'start rundll32 url.dll,FileProtocolHandler ' . '"' . l:url . '"'
+    elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
+        let l:cmd = 'open ' . '"' . l:url . '"'
+    elseif executable('xdg-open')
+        let l:cmd = 'xdg-open ' . '"' . l:url . '"'
+    else
+        echoerr "Browser not found."
+    endif
+
+    " Async search
+    if exists('*jobstart')
+        call jobstart(l:cmd)
+    elseif exists('*job_start')
+        call job_start(l:cmd)
+    else
+        call system(l:cmd)
+    endif
+endfunction
 
 function! searchme#Start(type)
     let l:save_tmp = @"
@@ -17,41 +64,7 @@ function! searchme#Start(type)
     let l:select_text = @"
     let @" = l:save_tmp
 
-    call <SID>Search(l:select_text, g:search_engine)
-endfunction
-
-function! s:Search(text, search_engine)
-    if has_key(g:query_map, a:search_engine)
-        let l:query_url = g:query_map[a:search_engine]
-    else
-        echoerr "Unknown search engine."
-        return
-    endif
-    " Escape for use string as shell command argument
-    let l:text = shellescape(a:text)
-
-    let l:url = substitute(l:query_url, '{query}', l:text, 'g')
-    let l:url = substitute(l:url, ' ', '%20', 'g')
-
-    " Windows(including mingw)
-    if has('win32') || has('win64') || has('win32unix')
-        let cmd = 'start rundll32 url.dll,FileProtocolHandler ' . l:url
-    elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
-        let cmd = 'open ' . l:url
-    elseif executable('xdg-open')
-        let cmd = 'xdg-open ' . l:url
-    else
-        echoerr "Browser not found."
-    endif
-
-    " Async search
-    if exists('*jobstart')
-        call jobstart(cmd)
-    elseif exists('*job_start')
-        call job_start(cmd)
-    else
-        call system(cmd)
-    endif
+    call s:Search(l:select_text, g:search_engine)
 endfunction
 
 function! searchme#SearchIn(...)
@@ -61,7 +74,7 @@ function! searchme#SearchIn(...)
         let l:pos = match(l:text,' ')
         "Search engine not specified, use the default
         if l:pos < 0
-            echom "Use default engine."
+            echom "Use default search engine."
             let l:search_engine = g:search_engine
             let l:keyword = trim(l:text)
         else
@@ -72,7 +85,7 @@ function! searchme#SearchIn(...)
         let l:keyword = a:1
         let l:search_engine = a:2
     endif
-    call <SID>Search(l:keyword, l:search_engine)
+    call s:Search(l:keyword, l:search_engine)
 endfunction
 
 function! searchme#SearchCurrentText(...)
@@ -82,7 +95,7 @@ function! searchme#SearchCurrentText(...)
         let l:search_engine = tolower(trim(a:1))
     endif
     let l:keyword = expand("<cword>")
-    call <SID>Search(l:keyword, l:search_engine)
+    call s:Search(l:keyword, l:search_engine)
 endfunction
 
 function! searchme#SearchVisualText(...)
@@ -98,7 +111,7 @@ function! searchme#SearchVisualText(...)
     finally
         let @" = l:save_tmp
     endtry
-    call <SID>Search(l:select_text, l:search_engine)
+    call s:Search(l:select_text, l:search_engine)
 endfunction
 
 function! searchme#Complete(arg_lead, cmd_line, cursor_pos)

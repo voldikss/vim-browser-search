@@ -16,6 +16,8 @@ Plug 'voldikss/vim-searchme'
 
     Also you may try `<Leader>S`, with which you can input what you want to search.
 
+    **Note**: If the selection contains a URL, the plugin will open the url directly instead of searching it.
+
 - **Commands**
 
     | command | introduction |
@@ -58,3 +60,4 @@ Plug 'voldikss/vim-searchme'
 ### Todo
 
 -   [x] Support operator-pending mode
+-   [x] Detect urls
