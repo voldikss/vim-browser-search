@@ -60,4 +60,5 @@ Plug 'voldikss/vim-searchme'
 ### Todo
 
 -   [x] Support operator-pending mode
--   [x] Detect urls
+-   [x] Detect URLs
+-   [ ] Customized key mapping

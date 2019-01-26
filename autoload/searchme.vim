@@ -53,9 +53,9 @@ endfunction
 function! searchme#Start(type)
     let l:save_tmp = @"
 
-    if a:type ==# 'v'
+    if index(['v', 'V'], a:type) >=0
         normal! `<v`>y
-    elseif a:type ==# 'char'
+    elseif index(['char', 'line'], a:type) >= 0
         normal! `[v`]y
     else
         return
