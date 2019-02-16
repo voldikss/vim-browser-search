@@ -31,7 +31,7 @@ function! s:Search(text, search_engine)
 
     " Windows(including mingw)
     if has('win32') || has('win64') || has('win32unix')
-        let l:cmd = 'start rundll32 url.dll,FileProtocolHandler ' . '"' . l:url . '"'
+        let l:cmd = 'rundll32 url.dll,FileProtocolHandler ' . '"' . l:url . '"'
     elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
         let l:cmd = 'open ' . '"' . l:url . '"'
     elseif executable('xdg-open')
@@ -74,7 +74,7 @@ function! searchme#SearchIn(...)
         let l:pos = match(l:text,' ')
         "Search engine not specified, use the default
         if l:pos < 0
-            echom "Use default search engine."
+            echom "[vim-search-me] Use default search engine."
             let l:search_engine = g:search_engine
             let l:keyword = trim(l:text)
         else
