@@ -3,9 +3,35 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-01-26 14:52:35
 
+let s:search_engine = get(g:, 'g:search_engine', 'google')
+
+let s:query_map = {
+        \ 'google':'https://google.com/search?q={query}',
+        \ 'mathematica':'https://www.wolframalpha.com/input/?i={query}',
+        \ 'duckduckgo': 'https://duckduckgo.com/?q={query}',
+        \ 'bing': 'https://www.bing.com/search?q={query}',
+        \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd={query}',
+        \ 'github':'https://github.com/search?q={query}',
+        \ 'stackoverflow':'https://stackoverflow.com/search?q={query}',
+        \ 'askubuntu': 'https://askubuntu.com/search?q={query}',
+        \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
+        \ 'reddit':'https://www.reddit.com/search?q={query}',
+        \ 'twitter-search': 'https://twitter.com/search/{query}',
+        \ 'twitter-user': 'https://twitter.com/{query}',
+        \ 'zhihu':'https://www.zhihu.com/search?q={query}',
+        \ 'bilibili':'http://search.bilibili.com/all?keyword={query}',
+        \ 'youtube':'https://www.youtube.com/results?search_query={query}&page=&utm_source=opensearch'
+        \ }
+
+" Add user-added query maps
+if exists('g:query_map_added')
+    call extend(s:query_map, g:query_map_added)
+endif
+
+
 function! s:Search(text, search_engine)
-    if has_key(g:query_map, a:search_engine)
-        let l:query_url = g:query_map[a:search_engine]
+    if has_key(s:query_map, a:search_engine)
+        let l:query_url = s:query_map[a:search_engine]
     else
         echoerr "Unknown search engine."
         return
@@ -64,7 +90,7 @@ function! searchme#Start(type)
     let l:select_text = @"
     let @" = l:save_tmp
 
-    call s:Search(l:select_text, g:search_engine)
+    call s:Search(l:select_text, s:search_engine)
 endfunction
 
 function! searchme#SearchIn(...)
@@ -75,7 +101,7 @@ function! searchme#SearchIn(...)
         "Search engine not specified, use the default
         if l:pos < 0
             echom "[vim-search-me] Use default search engine."
-            let l:search_engine = g:search_engine
+            let l:search_engine = s:search_engine
             let l:keyword = trim(l:text)
         else
             let l:search_engine = l:text[: l:pos-1]
@@ -90,7 +116,7 @@ endfunction
 
 function! searchme#SearchCurrentText(...)
     if a:0 == 0
-        let l:search_engine = tolower(g:search_engine)
+        let l:search_engine = tolower(s:search_engine)
     else
         let l:search_engine = tolower(trim(a:1))
     endif
@@ -100,7 +126,7 @@ endfunction
 
 function! searchme#SearchVisualText(...)
     if a:0 == 0
-        let l:search_engine = tolower(g:search_engine)
+        let l:search_engine = tolower(s:search_engine)
     else
         let l:search_engine = tolower(trim(a:1))
     endif
@@ -119,10 +145,10 @@ function! searchme#Complete(arg_lead, cmd_line, cursor_pos)
     let l:args = split(l:cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
     call remove(l:args, 0) " Remove the command's name
     if len(l:args) == 1 " At search engine's position
-        let l:candidates = keys(g:query_map)
+        let l:candidates = keys(s:query_map)
         let l:prefix = l:args[0]
         if !empty(l:prefix) " If l:prefix is empty we want to return all options
-            let l:candidates = filter(keys(g:query_map), 'v:val[:len(l:prefix) - 1] == l:prefix')
+            let l:candidates = filter(keys(s:query_map), 'v:val[:len(l:prefix) - 1] == l:prefix')
         endif
         return sort(l:candidates)
     endif
