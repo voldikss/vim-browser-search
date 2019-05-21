@@ -26,39 +26,33 @@ Plug 'voldikss/vim-searchme'
     |`SearchVisualText [search engine]`   | Search selected text                           |
     |`Search [search engine] {text}`      | Search text (using specified search engine)    |
     |`SearchInGithub {text}`              | Search text in [GitHub](https://github.com)    |
-    | `SearchInZhihu {text}`              | Search text in [Zhihu](https://www.zhihu.com/) |
-    | `...`                               |...                                             |
+    |`SearchInZhihu {text}`               | Search text in [Zhihu](https://www.zhihu.com/) |
+    |`...`                                | ...                                            |
 
 - **Define your own commands**
 
     ```vim
-    " Template
-    command!  -nargs=+  '[command name]'  :call searchme#SearchIn(<q-args>, '[search engine name]')
     " Example
     command!  -nargs=+  SearchInGoogle  :call searchme#SearchIn(<q-args>, 'google')
     ```
 
 - **Specify your default search engine**
     ```vim
-    " Template
-    let g:search_engine = "[search engine name]" "default: 'google'
+    " Example
+    let g:search_engine = 'bing' "default: 'google'
     ```
 
 - **Add more search engines**
 
     ```vim
-    " Template
-    let g:query_map_added = {
-            \ '[search engine name]': '[query url]'
-            \}
     " Example
     let g:query_map_added = {
             \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}'
-            \}
+            \ }
     ```
 
 ### Todo
 
 -   [x] Support operator-pending mode
--   [x] Detect URLs
+-   [x] Go to the URL instead of searching it
 -   [ ] Customized key mapping
