@@ -55,4 +55,4 @@ Plug 'voldikss/vim-searchme'
 
 -   [x] Support operator-pending mode
 -   [x] Go to the URL instead of searching it
--   [ ] Customized key mapping
+-   [x] Customized key mapping

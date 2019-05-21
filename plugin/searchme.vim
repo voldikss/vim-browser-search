@@ -6,6 +6,26 @@
 if exists('g:did_load_searchme') | finish | endif
 
 
+if get(g:, 'vim_search_me_default_mapping', 1)
+    if !hasmapto('<Plug>SearchNormal')
+        nmap <silent> <Leader>s <Plug>SearchNormal
+    endif
+
+    if !hasmapto('<Plug>SearchVisual')
+        vmap <silent> <Leader>s <Plug>SearchVisual
+    endif
+
+    if !hasmapto('<Plug>SearchComand')
+        nmap <silent> <Leader>S <Plug>SearchComand
+    endif
+endif
+
+
+nmap <silent> <Plug>SearchNormal :set operatorfunc=searchme#Start<cr>g@
+vmap <silent> <Plug>SearchVisual :<c-u>call searchme#Start(visualmode())<cr>
+nmap <silent> <Plug>SearchComand :<c-u>Search<space>
+
+
 command! -complete=customlist,searchme#Complete -nargs=?        SearchCurrentText :call searchme#SearchCurrentText(<f-args>)
 command! -complete=customlist,searchme#Complete -nargs=? -range SearchVisualText  :call searchme#SearchVisualText(<f-args>)
 
@@ -17,9 +37,5 @@ command!                                        -nargs=+        SearchInGithub  
 command!                                        -nargs=+        SearchInSO        :call searchme#SearchIn(<q-args>, 'stackoverflow')
 command!                                        -nargs=+        SearchInBilibili  :call searchme#SearchIn(<q-args>, 'bilibili')
 command!                                        -nargs=+        SearchInZhihu     :call searchme#SearchIn(<q-args>, 'zhihu')
-
-nnoremap <silent> <leader>s :set operatorfunc=searchme#Start<cr>g@
-vnoremap <silent> <leader>s :<c-u>call searchme#Start(visualmode())<cr>
-noremap  <silent> <Leader>S :Search<space>
 
 let g:did_load_searchme = 1
