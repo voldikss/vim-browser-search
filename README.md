@@ -1,6 +1,6 @@
 # vim-searchme
 
-A naive Vim/Neovim plugin to open browser and search text directly.
+A naive Vim/Neovim plugin to open browser and search text asynchronously
 
 ## Installation
 
@@ -10,11 +10,15 @@ Plug 'voldikss/vim-searchme'
 
 ## Basic
 
+Suppose you are using the default key mappings
+
 Use `<Leader>s` in *operator-pending* mode to search a word (for example, `<Leader>saw` to search a word). 
 
 Use `<Leader>s` in visual mode to search for what you have selected. (for example, if you selected strings inside a bracket using `vas`, just type `<Leader>s` to search it).
 
 Also you may try `<Leader>S`, with which you can input what you want to search in the cmdline.
+
+Furthermore, this plugin will execute asynchronously if your Vim has job api.
 
 ## KeyMap
 

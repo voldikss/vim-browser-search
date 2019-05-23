@@ -43,6 +43,7 @@ using vas, just type `<Leader>s` to search it).
 
 Also you may try `<Leader>S`, with which you can input what you want to search.
 
+Furthermore, this plugin will execute asynchronously if your Vim has job api.
 
 ===============================================================================
 KEYMAP                                                     *vim-search-me-keymap*
