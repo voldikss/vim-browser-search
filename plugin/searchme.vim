@@ -3,10 +3,10 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-01-26 14:53:09
 
-if exists('g:did_load_searchme') | finish | endif
+if exists('g:did_load_vimsearchme') | finish | endif
 
 
-if get(g:, 'vim_search_me_default_mapping', 1)
+if get(g:, 'vsm_default_mappings', 1)
     if !hasmapto('<Plug>SearchNormal')
         nmap <silent> <Leader>s <Plug>SearchNormal
     endif
@@ -38,4 +38,4 @@ command!                                        -nargs=+        SearchInSO      
 command!                                        -nargs=+        SearchInBilibili  :call searchme#SearchIn(<q-args>, 'bilibili')
 command!                                        -nargs=+        SearchInZhihu     :call searchme#SearchIn(<q-args>, 'zhihu')
 
-let g:did_load_searchme = 1
+let g:did_load_vimsearchme = 1

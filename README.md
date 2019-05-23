@@ -33,26 +33,26 @@ nmap <silent> <Leader>S <Plug>SearchComand
 
 ## Variables
 
-#### **`g:vim_search_me_default_mapping`** 
+#### **`g:vsm_default_mappings`** 
 
 > Whether to use the default key mapping, default: 1
 
-#### **`g:search_engine`**
+#### **`g:vsm_search_engine`**
 
 > Specify your default search engine, default: 'google'
 
 ```vim
 " Example
-let g:search_engine = 'bing'
+let g:vsm_search_engine = 'bing'
 ```
 
-#### **`g:query_map_added`**
+#### **`g:vsm_query_map_added`**
 
 > Your additional query map
 
 ```vim
 " Example
-let g:query_map_added = {
+let g:vsm_query_map_added = {
     \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}'
     \ }
 ```

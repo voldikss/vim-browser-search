@@ -32,6 +32,8 @@ Install by vim-plug >
 ===============================================================================
 BASIC                                                       *vim-search-me-basic*
 
+Suppose you are using the default key mappings
+
 Use `<Leader>s` in operator-pending mode to search a word (for example, 
 `<Leader>saw` to search a word). `
 
@@ -61,24 +63,24 @@ You can also define your own mappings, by remapping <Leader>d,
 ================================================================================
 VARIABLES                                                *vim-search-me-variables*
 
-*g:vim_search_me_default_mappings*
+*g:vsm_default_mappings*
 
     Whether to use the default key mappings
 
     Default: 1
 
-*g:search_engine*                
+*g:vsm_search_engine*                
 
     Search engine name
 
     Default: 'google'
 
-*g:query_map_added*             
+*g:vsm_query_map_added*             
 
     Search engine query url
 
     Example: >
-    let g:query_map = {
+    let g:vsm_query_map_added = {
         \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}',
         \}
 
