@@ -52,6 +52,7 @@ function! s:Search(text, search_engine)
     " Get rid of wouble-quote, single-quote, back-quote, back-slash, whitespace
     let l:url = substitute(l:url, "[\"'`]"," ",'g')
     let l:url = substitute(l:url, '\s\+',"%20",'g')
+    let l:url = substitute(l:url, '\$','\\$','g')
     let l:url = trim(l:url,"%20")
     let l:url = trim(l:url,"\\")
 
