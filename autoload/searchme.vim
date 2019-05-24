@@ -3,7 +3,7 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-01-26 14:52:35
 
-let s:search_engine = get(g:, 'g:vsm_search_engine', 'google')
+let s:search_engine = get(g:, 'vsm_search_engine', 'google')
 
 let s:query_map = {
         \ 'google':'https://google.com/search?q={query}',
