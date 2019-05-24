@@ -37,10 +37,11 @@ function! s:Search(text, search_engine)
         return
     endif
 
-    " Escape for use string as shell command argument
-    let text = shellescape(a:text)
+    " Replace `\n`, preserve `\`
+    let text = substitute(a:text, '\n', ' ', 'g')
+    let text = substitute(text, '\\', '\\\', 'g')
 
-    " Whether selected text contains URL
+    " If selected text contains URL
     let url_in_text = matchstr(text, 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*')
 
     if url_in_text !=# ''
@@ -49,9 +50,8 @@ function! s:Search(text, search_engine)
         let url = substitute(query_url, '{query}', text, 'g')
     endif
 
-    " Get rid of wouble-quote, single-quote, back-quote, back-slash, whitespace
-    let url = substitute(url, "[\"'`]"," ",'g')
-    let url = substitute(url, '\s\+',"%20",'g')
+    " Escape double-quote, back-quote, back-slash, whitespace
+    let url = substitute(url, '\(["`]\)','\="\\".submatch(1)','g')
     let url = substitute(url, '\$','\\$','g')
     let url = trim(url,"%20")
     let url = trim(url,"\\")
