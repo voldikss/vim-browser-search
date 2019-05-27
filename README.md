@@ -5,7 +5,7 @@ A naive Vim/Neovim plugin to open browser and search text asynchronously
 ## Installation
 
 ```vim
-Plug 'voldikss/vim-searchme'
+Plug 'voldikss/vim-search-me'
 ```
 
 ## Basic
