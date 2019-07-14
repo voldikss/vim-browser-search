@@ -3,6 +3,13 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-01-26 14:52:35
 
+function SafeTrim(input, mask)
+    if exists('*trim')
+        return trim(a:input, a:mask)
+    endif
+    return a:input
+endfunction
+
 let s:search_engine = get(g:, 'vsm_search_engine', 'google')
 
 let s:query_map = {
@@ -53,8 +60,8 @@ function! s:Search(text, search_engine)
     " Escape double-quote, back-quote, back-slash, whitespace
     let url = substitute(url, '\(["`]\)','\="\\".submatch(1)','g')
     let url = substitute(url, '\$','\\$','g')
-    let url = trim(url,"%20")
-    let url = trim(url,"\\")
+    let url = SafeTrim(url,"%20")
+    let url = SafeTrim(url,"\\")
 
     " Windows(including mingw)
     if has('win32') || has('win64') || has('win32unix')
@@ -103,7 +110,7 @@ function! searchme#SearchIn(...)
         if pos < 0
             echom "[vim-search-me] Use default search engine."
             let search_engine = s:search_engine
-            let keyword = trim(text)
+            let keyword = SafeTrim(text)
         else
             let search_engine = text[: pos-1]
             let keyword = text[pos+1 :]
@@ -119,7 +126,7 @@ function! searchme#SearchCurrentText(...)
     if a:0 == 0
         let search_engine = tolower(s:search_engine)
     else
-        let search_engine = tolower(trim(a:1))
+        let search_engine = tolower(SafeTrim(a:1))
     endif
     let keyword = expand("<cword>")
     call s:Search(keyword, search_engine)
@@ -129,7 +136,7 @@ function! searchme#SearchVisualText(...)
     if a:0 == 0
         let search_engine = tolower(s:search_engine)
     else
-        let search_engine = tolower(trim(a:1))
+        let search_engine = tolower(SafeTrim(a:1))
     endif
     try
         let save_tmp = @"
