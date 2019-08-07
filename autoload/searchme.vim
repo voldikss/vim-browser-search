@@ -31,7 +31,7 @@ let s:query_map = {
         \ }
 
 " Add user-added query maps
-if exists('g:query_map_added')
+if exists('g:vsm_query_map_added')
     call extend(s:query_map, g:vsm_query_map_added)
 endif
 
