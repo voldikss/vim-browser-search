@@ -1,88 +1,67 @@
-# vim-searchme
+# vim-browser-search
 
-A naive Vim/Neovim plugin to open browser and search text asynchronously
+This plugin helps perform a quick web search for the text selected in (Neo)Vim
 
 ## Installation
 
 ```vim
-Plug 'voldikss/vim-search-me'
+Plug 'voldikss/vim-browser-search'
 ```
 
-## Basic
+## Keymappings
 
-Suppose you are using the default key mappings
-
-Use `<Leader>s` in *operator-pending* mode to search a word (for example, `<Leader>saw` to search a word). 
-
-Use `<Leader>s` in visual mode to search for what you have selected. (for example, if you selected strings inside a bracket using `vas`, just type `<Leader>s` to search it).
-
-Also you may try `<Leader>S`, with which you can input what you want to search in the cmdline.
-
-Furthermore, this plugin will execute asynchronously if your Vim has job api.
-
-## KeyMap
-
-Here are some default key mappings
-
-You can also define your own mappings, by remapping `<Leader>d`, `<Leader>w` or `<Leader>r`
+This plugin doesn't supply any default mappings. Here are some recommended key mappings
 
 ```vim
-" Type <Leader>s to trig searching in normal mode
 nmap <silent> <Leader>s <Plug>SearchNormal
-" Type <Leader>s to search selected text in visual mode
 vmap <silent> <Leader>s <Plug>SearchVisual
-" Type <Leader>S to input the text you want to search in the cmdline
-nmap <silent> <Leader>S <Plug>SearchComand
 ```
+
+## Use cases
+
+- Select text and type `<Leader>s` to do a web search
+
+- Type `<Leader>saw` in to search web for a word
+
+- Type `<Leader>sa(` to search web for the text wrapped in the bracket
+
+- Type `<Leader>sas` to search web for a sentence
+
+- ...
 
 ## Variables
 
-#### **`g:vsm_default_mappings`** 
+#### **`g:browser_search_default_engine`**
 
-> Whether to use the default key mapping, default: 1
+Defaut: `'google'`
 
-#### **`g:vsm_search_engine`**
+#### **`g:browser_search_engines`**
 
-> Specify your default search engine, default: 'google'
-
-```vim
-" Example
-let g:vsm_search_engine = 'bing'
-```
-
-#### **`g:vsm_query_map_added`**
-
-> Your additional query map
+Defaut:
 
 ```vim
-" Example
-let g:vsm_query_map_added = {
-    \ 'wikipedia': 'https://en.wikipedia.org/wiki/{query}'
-    \ }
+  {
+  \ 'google':'https://google.com/search?q=%s',
+  \ 'github':'https://github.com/search?q=%s',
+  \ 'stackoverflow':'https://stackoverflow.com/search?q=%s',
+  \ 'bing': 'https://www.bing.com/search?q=%s',
+  \ 'duckduckgo': 'https://duckduckgo.com/?q=%s',
+  \ 'wikipedia': 'https://en.wikipedia.org/wiki/%s',
+  \ 'youtube':'https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
+  \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd=%s'
+  \ }
 ```
 
 ## Commands
 
-- Built-in commands
+#### `:Search {engine} {text}`
 
-| command                             | introduction                                   |
-|-------------------------------------|------------------------------------------------|
-| `SearchCurrentText [search engine]` | Search text under the cursor                   |
-| `SearchVisualText [search engine]`  | Search selected text                           |
-| `Search [search engine] {text}`     | Search text (using specified search engine)    |
-| `SearchInGithub {text}`             | Search text in [GitHub](https://github.com)    |
-| `SearchInZhihu {text}`              | Search text in [Zhihu](https://www.zhihu.com/) |
-| `...`                               | ...                                            |
+Search `text` with `engine`
 
-- Define your own commands
+#### `:SearchCurrentText [engine]`
 
-```vim
-" Example
-command!  -nargs=+  SearchInGoogle  :call searchme#SearchIn(<q-args>, 'google')
-```
+Search the text under the cursor with `engine`, if no `engine`, use `g:browser_search_default_engine`
 
-## Todo
+#### `:SearchVisualText [engine]`
 
--   [x] Support operator-pending mode
--   [x] Go to the URL instead of searching it
--   [x] Customized key mapping
+Search the selected text with `engine`, if no `engine`, use `g:browser_search_default_engine`

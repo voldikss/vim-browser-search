@@ -1,0 +1,96 @@
+*vim-browser-search.txt*    Plugin for web search       Last change: 2019-12-28
+
+Author: voldikss<https://github.com/voldikss>
+License: MIT
+
+CONTENTS                                                *browser-search-contents*
+
+Introduction                                    |browser-search-introduction|
+Installation                                    |browser-search-installation|
+Keymappings                                          |browser-search-key-mappings|
+Usecases                                        |browser-search-usecases|
+Variables                                       |browser-search-variables|
+Commands                                        |browser-search-command|
+About                                           |browser-search-about|
+Repository                                      |browser-search-repository|
+
+==============================================================================
+INTRODUCTION                                          *browser-search-introduction*
+
+This plugin helps perform a quick web search for the text selected in (Neo)Vim
+
+
+==============================================================================
+INSTALLATION                                      *browser-search-installation*
+
+With vim-plug
+ >
+    Plug 'voldikss/vim-browser-search'
+    :PlugInstall
+
+
+==============================================================================
+KEYMAP                                                     *browser-search-keymap*
+
+    This plugin doesn't supply default mappings. Here are some recommended
+    key mappings
+ >
+    nmap <silent> <Leader>s <Plug>SearchNormal
+    vmap <silent> <Leader>s <Plug>SearchVisual
+<
+
+==============================================================================
+USECASES                                          *browser-search-usecases*
+
+    Select text and type `<Leader>s` to do a web search
+
+    Type `<Leader>saw` in to search web for a word
+
+    Type `<Leader>sa(` to search web for the text wrapped in the bracket
+
+    Type `<Leader>sas` to search web for a sentence
+
+    ...
+
+
+==============================================================================
+VARIABLES                                           *browser-search-variables*
+
+g:browser_search_default_engine               *g:browser_search_default_engine*
+
+    Defaut: `'google'`
+
+g:browser_search_engines                      *g:browser_search_engines*
+
+    Defaut:
+ >
+    {
+    \ 'google':'https://google.com/search?q=%s',
+    \ 'github':'https://github.com/search?q=%s',
+    \ 'stackoverflow':'https://stackoverflow.com/search?q=%s',
+    \ 'bing': 'https://www.bing.com/search?q=%s',
+    \ 'duckduckgo': 'https://duckduckgo.com/?q=%s',
+    \ 'wikipedia': 'https://en.wikipedia.org/wiki/%s',
+    \ 'youtube':'https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
+    \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd=%s'
+    \ }
+<
+
+==============================================================================
+COMMANDS                                            *browser-search-commands*
+
+Built-in commands ~
+    >
+    :Search [search engine] {text}     Search text (using specified search engine)
+
+
+==============================================================================
+REPOSITORY                                       *browser-search-repository*
+
+    |vim-browser-search| is developed on GitHub.
+
+    https://github.com/voldikss/vim-browser-search
+
+
+==============================================================================
+vim:tw=78:nosta:noet:ts=8:sts=0:ft=help:noet:fen:fdm=marker:
