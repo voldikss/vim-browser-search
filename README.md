@@ -1,5 +1,7 @@
 # vim-browser-search
 
+[![Build Status](https://travis-ci.org/voldikss/vim-browser-search.svg?branch=master)](https://travis-ci.org/voldikss/vim-browser-search)
+
 This plugin helps perform a quick web search for the text selected in (Neo)Vim
 
 ## Installation

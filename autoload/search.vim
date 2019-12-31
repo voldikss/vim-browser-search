@@ -28,7 +28,7 @@ function! s:Search(text, engine) abort
 
   " If selected text contains URL
   let url_in_text = matchstr(text, 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*')
-  if url_in_text != ''
+  if url_in_text !=# ''
     let url = url_in_text
   else
     let url = printf(url, text)
@@ -37,7 +37,7 @@ function! s:Search(text, engine) abort
   " Escape double-quote, back-quote, back-slash, whitespace
   let url = substitute(url, '\(["`]\)','\="\\".submatch(1)','g')
   let url = substitute(url, '\$','\\$','g')
-  let url = s:SafeTrim(url,"%20")
+  let url = s:SafeTrim(url,'%20')
   let url = s:SafeTrim(url,"\\")
 
   if has('win32') || has('win64') || has('win32unix')
@@ -117,14 +117,14 @@ function! search#Complete(arg_lead, cmd_line, cursor_pos) abort
     let candidates = keys(s:engines)
     let prefix = args[0]
     if !empty(prefix) " If prefix is empty we want to return all options
-      let candidates = filter(keys(s:engines), 'v:val[:len(prefix) - 1] == prefix')
+      let candidates = filter(keys(s:engines), 'v:val[:len(prefix) - 1] ==# prefix')
     endif
     return sort(candidates)
   endif
 endfunction
 
 function! s:Echo(group, msg) abort
-  if a:msg == '' | return | endif
+  if a:msg ==# '' | return | endif
   execute 'echohl' a:group
   echo a:msg
   echon ' '
@@ -132,7 +132,7 @@ function! s:Echo(group, msg) abort
 endfunction
 
 function! s:Echon(group, msg) abort
-  if a:msg == '' | return | endif
+  if a:msg ==# '' | return | endif
   execute 'echohl' a:group
   echon a:msg
   echon ' '
@@ -154,16 +154,16 @@ function! s:ShowMsg(message, ...) abort
 
   call s:Echo('Constant', '[vim-browser-search]')
 
-  if msg_type == 'info'
+  if msg_type ==# 'info'
     call s:Echon('Normal', message)
-  elseif msg_type == 'warning'
+  elseif msg_type ==# 'warning'
     call s:Echon('WarningMsg', message)
-  elseif msg_type == 'error'
+  elseif msg_type ==# 'error'
     call s:Echon('Error', message)
   endif
 endfunction
 
-function s:SafeTrim(input, mask) abort
+function! s:SafeTrim(input, mask) abort
   if exists('*trim')
     return trim(a:input, a:mask)
   endif
