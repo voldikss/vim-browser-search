@@ -5,6 +5,8 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
+scriptencoding utf-8
+
 let s:engines = {
   \ 'google':'https://google.com/search?q=%s',
   \ 'github':'https://github.com/search?q=%s',
@@ -27,7 +29,7 @@ function! s:Search(text, engine) abort
   let text = substitute(text, '\\', '\\\', 'g')
 
   " If selected text contains URL
-  let url_in_text = matchstr(text, 'https\?:\/\/\(\w\+\(:\w\+\)\?@\)\?\([A-Za-z][-_0-9A-Za-z]*\.\)\{1,}\(\w\{2,}\.\?\)\{1,}\(:[0-9]\{1,5}\)\?\S*')
+  let url_in_text = matchstr(text, '\c\<\(\%([a-z][0-9A-Za-z_-]\+:\%(\/\{1,3}\|[a-z0-9%]\)\|www\d\{0,3}[.]\|[a-z0-9.\-]\+[.][a-z]\{2,4}\/\)\%([^ \t()<>]\+\|(\([^ \t()<>]\+\|\(([^ \t()<>]\+)\)\)*)\)\+\%((\([^ \t()<>]\+\|\(([^ \t()<>]\+)\)\)*)\|[^ \t`!()[\]{};:'."'".'".,<>?«»“”‘’]\)\)')
   if url_in_text !=# ''
     let url = url_in_text
   else
