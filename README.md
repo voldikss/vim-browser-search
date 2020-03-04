@@ -39,7 +39,7 @@ Defaut: `'google'`
 
 #### **`g:browser_search_engines`**
 
-Defaut:
+Default:
 
 ```vim
   {
