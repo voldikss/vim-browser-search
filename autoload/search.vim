@@ -41,13 +41,18 @@ function! s:Search(text, engine) abort
   let url = substitute(url, '\$','\\$','g')
   let url = s:SafeTrim(url,'%20')
   let url = s:SafeTrim(url,"\\")
+  if has('nvim')
+    let url = shellescape(url)
+  else
+    let url = substitute(url, '\s', '\\ ', 'g')
+  endif
 
   if has('win32') || has('win64') || has('win32unix')
-    let cmd = 'rundll32 url.dll,FileProtocolHandler ' . shellescape(url)
+    let cmd = 'rundll32 url.dll,FileProtocolHandler ' . url
   elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
-    let cmd = 'open ' . shellescape(url)
+    let cmd = 'open ' . url
   elseif executable('xdg-open')
-    let cmd = 'xdg-open ' . shellescape(url)
+    let cmd = 'xdg-open ' . url
   else
     call s:ShowMsg('Browser was not found', 'error')
     return
