@@ -108,10 +108,10 @@ function! search#SearchVisual(...) abort
     call s:ShowMsg('Unknown search engine: ' . engine, 'error')
     return
   endif
-  let reg_tmp = @a
-  normal! gv"ay
-  let text=@a
-  let @a = reg_tmp
+  let reg_tmp = @"
+  normal! gv""y
+  let text=@"
+  let @" = reg_tmp
   unlet reg_tmp
   call s:Search(text, engine)
 endfunction
