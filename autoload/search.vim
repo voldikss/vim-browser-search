@@ -107,6 +107,7 @@ function! search#search_current(argstr) abort
   if index(keys(g:browser_search_builtin_engines), engine) < 0
     call search#util#show_msg('Unknown search engine: ' . engine, 'error')
   endif
+  let text = expand('<cword>')
   call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
 endfunction
 
