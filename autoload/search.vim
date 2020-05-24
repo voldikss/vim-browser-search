@@ -96,26 +96,24 @@ function! search#search_normal(visual_type) abort
   endif
   let text = @"
   let @" = reg_tmp
-  call s:search(text, g:browser_search_default_engine)
+  call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
 endfunction
 
 function! search#search_current(argstr) abort
   let [_, engine] = search#cmdline#parse(split(a:argstr))
   if empty(engine)
-    let engine = g:browser_search_default_engine
+    let engine = get(b:, 'browser_search_default_engine', g:browser_search_default_engine)
   endif
   if index(keys(g:browser_search_builtin_engines), engine) < 0
     call search#util#show_msg('Unknown search engine: ' . engine, 'error')
-    return
   endif
-  let text = expand('<cword>')
-  call s:search(text, engine)
+  call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
 endfunction
 
 function! search#search_visual(argstr) abort
   let [_, engine] = search#cmdline#parse(split(a:argstr))
   if empty(engine)
-    let engine = g:browser_search_default_engine
+    let engine = get(b:, 'browser_search_default_engine', g:browser_search_default_engine)
   endif
   if index(keys(g:browser_search_builtin_engines), engine) < 0
     call search#util#show_msg('Unknown search engine: ' . engine, 'error')
