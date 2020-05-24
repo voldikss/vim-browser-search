@@ -56,14 +56,17 @@ Default:
 
 ## Commands
 
-#### `:Search {engine} {text}`
+#### `:BrowserSearch [--engine] [text]`
 
 Search `text` with `engine`
 
-#### `:SearchCurrentText [engine]`
-
-Search the text under the cursor with `engine`, if no `engine`, use `g:browser_search_default_engine`
-
-#### `:SearchVisualText [engine]`
-
-Search the selected text with `engine`, if no `engine`, use `g:browser_search_default_engine`
+e.g.
+```vim
+:BrowserSearch
+:BrowserSearch --github
+:BrowserSearch --github hello
+:1,2BrowserSearch
+:1,2BrowserSearch --github
+:%BrowserSearch
+:%BrowserSearch --github
+```

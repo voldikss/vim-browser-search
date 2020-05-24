@@ -10,14 +10,30 @@ if exists('g:did_load_browser_search')
 endif
 
 let g:browser_search_default_engine = get(g:, 'browser_search_default_engine', 'google')
+let g:browser_search_builtin_engines = {
+  \ 'google':'https://google.com/search?q=%s',
+  \ 'github':'https://github.com/search?q=%s',
+  \ 'stackoverflow':'https://stackoverflow.com/search?q=%s',
+  \ 'bing': 'https://www.bing.com/search?q=%s',
+  \ 'duckduckgo': 'https://duckduckgo.com/?q=%s',
+  \ 'wikipedia': 'https://en.wikipedia.org/wiki/%s',
+  \ 'youtube':'https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
+  \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd=%s'
+  \ }
+if exists('g:browser_search_engines')
+  call extend(g:browser_search_builtin_engines, g:browser_search_engines)
+endif
 
-nmap <silent> <Plug>SearchNormal  :set operatorfunc=search#SearchNormal<cr>g@
-vmap <silent> <Plug>SearchVisual  :<c-u>call search#SearchVisual()<cr>
+nmap <silent> <Plug>SearchNormal  :set operatorfunc=search#search_normal<cr>g@
+vmap <silent> <Plug>SearchVisual  :<c-u>call search#search_visual('')<cr>
 
-" Note:
-" I added `-range` just for preventing from echoing errors when the commands were executed with range prefix
-command! -complete=customlist,search#Complete -nargs=+ -range Search            call search#SearchCmdline(<q-args>)
-command! -complete=customlist,search#Complete -nargs=? -range SearchCurrentText call search#SearchCurrent(<f-args>)
-command! -complete=customlist,search#Complete -nargs=? -range SearchVisualText  call search#SearchVisual(<f-args>)
+" @deprecated
+command! -nargs=? -range -complete=customlist,search#cmdline#complete
+  \ SearchCurrentText call search#search_current(<q-args>)
+command! -nargs=? -range -complete=customlist,search#cmdline#complete
+  \ SearchVisualText  call search#search_visual(<q-args>)
+
+command! -nargs=* -range -complete=customlist,search#cmdline#complete
+  \ BrowserSearch     call search#start(<range>, <line1>, <line2>, <q-args>)
 
 let g:did_load_browser_search = 1

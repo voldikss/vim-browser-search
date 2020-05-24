@@ -1,29 +1,13 @@
 " ============================================================================
 " FileName: search.vim
-" Description:
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
 scriptencoding utf-8
 
-let s:engines = {
-  \ 'google':'https://google.com/search?q=%s',
-  \ 'github':'https://github.com/search?q=%s',
-  \ 'stackoverflow':'https://stackoverflow.com/search?q=%s',
-  \ 'bing': 'https://www.bing.com/search?q=%s',
-  \ 'duckduckgo': 'https://duckduckgo.com/?q=%s',
-  \ 'wikipedia': 'https://en.wikipedia.org/wiki/%s',
-  \ 'youtube':'https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
-  \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd=%s'
-  \ }
-
-if exists('g:browser_search_engines')
-  call extend(s:engines, g:browser_search_engines)
-endif
-
-function! s:Search(text, engine) abort
-  let url = s:engines[a:engine]
+function! s:search(text, engine) abort
+  let url = g:browser_search_builtin_engines[a:engine]
   " Replace `\n`, preserve `\`
   let text = substitute(a:text, '\n', ' ', 'g')
   let text = substitute(text, '\\', '\\\', 'g')
@@ -39,8 +23,8 @@ function! s:Search(text, engine) abort
   " Escape double-quote, back-quote, back-slash, whitespace
   let url = substitute(url, '\(["`]\)','\="\\".submatch(1)','g')
   let url = substitute(url, '\$','\\$','g')
-  let url = s:SafeTrim(url,'%20')
-  let url = s:SafeTrim(url,"\\")
+  let url = search#util#trim(url,'%20')
+  let url = search#util#trim(url,"\\")
   if has('nvim')
     let url = shellescape(url)
   else
@@ -54,7 +38,7 @@ function! s:Search(text, engine) abort
   elseif executable('xdg-open')
     let cmd = 'xdg-open ' . url
   else
-    call s:ShowMsg('Browser was not found', 'error')
+    call search#util#show_msg('Browser was not found', 'error')
     return
   endif
 
@@ -67,18 +51,41 @@ function! s:Search(text, engine) abort
   endif
 endfunction
 
-function! search#SearchCmdline(args) abort
-  let args = split(a:args, '\v\s+')
-  let engine = args[0]
-  if index(keys(s:engines), engine) < 0
-    call s:ShowMsg('Unknown search engine: ' . engine, 'error')
+function! search#start(range, line1, line2, argstr) abort
+  let [text, engine] = search#cmdline#parse(split(a:argstr))
+
+  if index(keys(g:browser_search_builtin_engines), engine) < 0
+    call search#util#show_msg('Unknown search engine' . engine, 'error')
     return
   endif
-  let text = join(args[1:], ' ')
-  call s:Search(text, engine)
+
+  if empty(text)
+    if a:range == 0
+      let text = getline('.')
+    elseif a:range == 1
+      let text = getline('.')
+    else
+      if a:line1 == a:line2
+        " https://vi.stackexchange.com/a/11028/17515
+        let [lnum1, col1] = getpos("'<")[1:2]
+        let [lnum2, col2] = getpos("'>")[1:2]
+        let textlist = getline(lnum1, lnum2)
+        if empty(textlist)
+          call search#util#show_msg('No text were selected', 'error')
+          return
+        endif
+        let textlist[-1] = textlist[-1][: col2 - 1]
+        let textlist[0] = textlist[0][col1 - 1:]
+      else
+        let textlist = getline(a:line1, a:line2)
+      endif
+      let text = join(textlist)
+    endif
+  endif
+  call s:search(text, engine)
 endfunction
 
-function! search#SearchNormal(visual_type) abort
+function! search#search_normal(visual_type) abort
   let reg_tmp = @"
   if index(['v', 'V'], a:visual_type) >=0
     normal! `<v`>y
@@ -89,23 +96,29 @@ function! search#SearchNormal(visual_type) abort
   endif
   let text = @"
   let @" = reg_tmp
-  call s:Search(text, g:browser_search_default_engine)
+  call s:search(text, g:browser_search_default_engine)
 endfunction
 
-function! search#SearchCurrent(...) abort
-  let engine = (a:0 == 0 ? g:browser_search_default_engine : a:1)
-  if index(keys(s:engines), engine) < 0
-    call s:ShowMsg('Unknown search engine: ' . engine, 'error')
+function! search#search_current(argstr) abort
+  let [_, engine] = search#cmdline#parse(split(a:argstr))
+  if empty(engine)
+    let engine = g:browser_search_default_engine
+  endif
+  if index(keys(g:browser_search_builtin_engines), engine) < 0
+    call search#util#show_msg('Unknown search engine: ' . engine, 'error')
     return
   endif
   let text = expand('<cword>')
-  call s:Search(text, engine)
+  call s:search(text, engine)
 endfunction
 
-function! search#SearchVisual(...) abort
-  let engine = (a:0 == 0 ? g:browser_search_default_engine : a:1)
-  if index(keys(s:engines), engine) < 0
-    call s:ShowMsg('Unknown search engine: ' . engine, 'error')
+function! search#search_visual(argstr) abort
+  let [_, engine] = search#cmdline#parse(split(a:argstr))
+  if empty(engine)
+    let engine = g:browser_search_default_engine
+  endif
+  if index(keys(g:browser_search_builtin_engines), engine) < 0
+    call search#util#show_msg('Unknown search engine: ' . engine, 'error')
     return
   endif
   let reg_tmp = @"
@@ -113,66 +126,5 @@ function! search#SearchVisual(...) abort
   let text=@"
   let @" = reg_tmp
   unlet reg_tmp
-  call s:Search(text, engine)
-endfunction
-
-function! search#Complete(arg_lead, cmd_line, cursor_pos) abort
-  let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
-  let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
-  call remove(args, 0) " Remove the command's name
-  if len(args) == 1 " At search engine's position
-    let candidates = keys(s:engines)
-    let prefix = args[0]
-    if !empty(prefix) " If prefix is empty we want to return all options
-      let candidates = filter(keys(s:engines), 'v:val[:len(prefix) - 1] ==# prefix')
-    endif
-    return sort(candidates)
-  endif
-endfunction
-
-function! s:Echo(group, msg) abort
-  if a:msg ==# '' | return | endif
-  execute 'echohl' a:group
-  echo a:msg
-  echon ' '
-  echohl NONE
-endfunction
-
-function! s:Echon(group, msg) abort
-  if a:msg ==# '' | return | endif
-  execute 'echohl' a:group
-  echon a:msg
-  echon ' '
-  echohl NONE
-endfunction
-
-function! s:ShowMsg(message, ...) abort
-  if a:0 == 0
-    let msg_type = 'info'
-  else
-    let msg_type = a:1
-  endif
-
-  if type(a:message) != 1
-    let message = string(a:message)
-  else
-    let message = a:message
-  endif
-
-  call s:Echo('Constant', '[vim-browser-search]')
-
-  if msg_type ==# 'info'
-    call s:Echon('Normal', message)
-  elseif msg_type ==# 'warning'
-    call s:Echon('WarningMsg', message)
-  elseif msg_type ==# 'error'
-    call s:Echon('Error', message)
-  endif
-endfunction
-
-function! s:SafeTrim(input, mask) abort
-  if exists('*trim')
-    return trim(a:input, a:mask)
-  endif
-  return a:input
+  call s:search(text, engine)
 endfunction
