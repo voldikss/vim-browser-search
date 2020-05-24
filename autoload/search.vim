@@ -89,11 +89,11 @@ function! search#SearchNormal(visual_type) abort
   endif
   let text = @"
   let @" = reg_tmp
-  call s:Search(text, g:browser_search_default_engine)
+  call s:Search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
 endfunction
 
 function! search#SearchCurrent(...) abort
-  let engine = (a:0 == 0 ? g:browser_search_default_engine : a:1)
+  let engine = (a:0 == 0 ? get(b:, 'browser_search_default_engine', g:browser_search_default_engine) : a:1)
   if index(keys(s:engines), engine) < 0
     call s:ShowMsg('Unknown search engine: ' . engine, 'error')
     return
@@ -103,7 +103,7 @@ function! search#SearchCurrent(...) abort
 endfunction
 
 function! search#SearchVisual(...) abort
-  let engine = (a:0 == 0 ? g:browser_search_default_engine : a:1)
+  let engine = (a:0 == 0 ? get(b:, 'browser_search_default_engine', g:browser_search_default_engine) : a:1)
   if index(keys(s:engines), engine) < 0
     call s:ShowMsg('Unknown search engine: ' . engine, 'error')
     return
