@@ -31,7 +31,7 @@ function! search#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
     let candidates = map(keys(g:browser_search_builtin_engines), '"--" . v:val')
     let prefix = args[0]
     if !empty(prefix) " If prefix is empty we want to return all options
-      let candidates = filter(keys(g:browser_search_builtin_engines), 'v:val[:len(prefix) - 1] ==# prefix')
+      let candidates = filter(candidates, 'v:val[:len(prefix) - 1] ==# prefix')
     endif
     return sort(candidates)
   endif
