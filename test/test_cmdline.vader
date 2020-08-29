@@ -1,0 +1,28 @@
+" vim:ft=vim
+
+Execute(Test search#cmdline#parse):
+  let argstr =''
+  AssertEqual [
+    \'',
+    \g:browser_search_default_engine
+    \], search#cmdline#parse('')
+
+  AssertEqual [
+    \'',
+    \'github'
+    \], search#cmdline#parse('--github')
+
+  AssertEqual [
+    \'hello',
+    \g:browser_search_default_engine
+    \], search#cmdline#parse('hello')
+
+  AssertEqual [
+    \'hello',
+    \'github'
+    \], search#cmdline#parse('--github hello')
+
+
+Execute(Test search#cmdline#complete):
+  AssertEqual sort(keys(g:browser_search_builtin_engines)),
+             \map(search#cmdline#complete(v:null, 'BrowserSearch --', 16), 'v:val[2:]')
