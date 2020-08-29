@@ -52,7 +52,7 @@ function! s:search(text, engine) abort
 endfunction
 
 function! search#start(range, line1, line2, argstr) abort
-  let [text, engine] = search#cmdline#parse(split(a:argstr))
+  let [text, engine] = search#cmdline#parse(a:argstr)
 
   if index(keys(g:browser_search_builtin_engines), engine) < 0
     call search#util#show_msg('Unknown search engine' . engine, 'error')

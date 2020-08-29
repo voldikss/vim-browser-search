@@ -4,18 +4,13 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
-function! search#cmdline#parse(arglist) abort
+function! search#cmdline#parse(argstr) abort
   let engine = ''
   let text = ''
-  if a:arglist != []
-    let c = 0
-    for arg in a:arglist
-      if arg =~ '^--.*$'
-        let engine = arg[2:]
-      else
-        let text = arg
-      endif
-    endfor
+  let match_groups = matchlist(a:argstr, '\v(--([a-zA-z0-9]+))?\s*(.*)$')
+  if !empty(match_groups)
+    let engine = match_groups[2]
+    let text = match_groups[3]
   endif
   if empty(engine)
     let engine = g:browser_search_default_engine
