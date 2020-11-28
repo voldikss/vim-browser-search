@@ -50,3 +50,15 @@ function! search#util#trim(input, mask) abort
   endif
   return a:input
 endfunction
+
+function! search#util#get_selected_text() abort
+  let col1 = getpos("'<")[2]
+  let col2 = getpos("'>")[2]
+  let text = getline('.')
+  if empty(text)
+    call skylight#util#show_msg('No content', 'error')
+    return ''
+  endif
+  let text = text[col1-1 : col2-1]
+  return text
+endfunction

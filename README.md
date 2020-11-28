@@ -1,8 +1,8 @@
 # vim-browser-search
 
-![CI](https://github.com/voldikss/vim-browser-search/workflows/CI/badge.svg)
-
 This plugin helps perform a quick web search for the text selected in (Neo)Vim
+
+![](https://user-images.githubusercontent.com/20282795/100518567-4f189580-31cd-11eb-91f1-4d9e70f5aa0a.png)
 
 ## Installation
 
@@ -57,17 +57,9 @@ Default:
 
 ## Commands
 
-#### `:BrowserSearch [--engine] [text]`
+#### `:BrowserSearch [text]`
 
-Search `text` with `engine`
+Search `text` with `engine`, if `text` is not given, use the word under
+cursor.
 
-e.g.
-```vim
-:BrowserSearch
-:BrowserSearch --github
-:BrowserSearch --github hello
-:1,2BrowserSearch
-:1,2BrowserSearch --github
-:%BrowserSearch
-:%BrowserSearch --github
-```
+Also, you can use this command in visual mode, i.e., `:'<,'>BrowserSearch`

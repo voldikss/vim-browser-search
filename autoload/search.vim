@@ -51,40 +51,6 @@ function! s:search(text, engine) abort
   endif
 endfunction
 
-function! search#start(range, line1, line2, argstr) abort
-  let [text, engine] = search#cmdline#parse(a:argstr)
-
-  if index(keys(g:browser_search_builtin_engines), engine) < 0
-    call search#util#show_msg('Unknown search engine' . engine, 'error')
-    return
-  endif
-
-  if empty(text)
-    if a:range == 0
-      let text = getline('.')
-    elseif a:range == 1
-      let text = getline('.')
-    else
-      if a:line1 == a:line2
-        " https://vi.stackexchange.com/a/11028/17515
-        let [lnum1, col1] = getpos("'<")[1:2]
-        let [lnum2, col2] = getpos("'>")[1:2]
-        let textlist = getline(lnum1, lnum2)
-        if empty(textlist)
-          call search#util#show_msg('No text were selected', 'error')
-          return
-        endif
-        let textlist[-1] = textlist[-1][: col2 - 1]
-        let textlist[0] = textlist[0][col1 - 1:]
-      else
-        let textlist = getline(a:line1, a:line2)
-      endif
-      let text = join(textlist)
-    endif
-  endif
-  call s:search(text, engine)
-endfunction
-
 function! search#search_normal(visual_type) abort
   let reg_tmp = @"
   if index(['v', 'V'], a:visual_type) >=0
@@ -99,31 +65,105 @@ function! search#search_normal(visual_type) abort
   call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
 endfunction
 
-function! search#search_current(argstr) abort
-  let [_, engine] = search#cmdline#parse(split(a:argstr))
-  if empty(engine)
-    let engine = get(b:, 'browser_search_default_engine', g:browser_search_default_engine)
-  endif
-  if index(keys(g:browser_search_builtin_engines), engine) < 0
-    call search#util#show_msg('Unknown search engine: ' . engine, 'error')
-  endif
-  let text = expand('<cword>')
-  call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
-endfunction
-
-function! search#search_visual(argstr) abort
-  let [_, engine] = search#cmdline#parse(split(a:argstr))
-  if empty(engine)
-    let engine = get(b:, 'browser_search_default_engine', g:browser_search_default_engine)
-  endif
-  if index(keys(g:browser_search_builtin_engines), engine) < 0
-    call search#util#show_msg('Unknown search engine: ' . engine, 'error')
-    return
-  endif
+function! search#search_visual() abort
   let reg_tmp = @"
   normal! gv""y
   let text=@"
   let @" = reg_tmp
-  unlet reg_tmp
-  call s:search(text, engine)
+  call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
+endfunction
+
+let s:has_popup = has('textprop') && has('patch-8.2.0286')
+let s:has_float = has('nvim') && exists('*nvim_win_set_config')
+let s:text = ''
+let s:enginelist = []
+function! search#start(text, visualmode, range) abort
+  if empty(a:text)
+    if a:visualmode == 'v' && a:range == 2
+      let s:text = search#util#get_selected_text()
+    else
+      let s:text = expand('<cword>')
+    endif
+  else
+    let s:text = a:text
+  endif
+  if empty(search#util#trim(s:text, ' ')) | return | endif
+
+  let s:enginelist = keys(g:browser_search_builtin_engines)
+  let engine_index = index(s:enginelist, g:browser_search_default_engine)
+
+  if s:has_popup
+    function! s:bs_menu_filter(id, key)
+      return popup_filter_menu(a:id, a:key)
+    endfunction
+
+    function! s:bs_menu_handler(id, index) abort
+      if a:index == -1 | return | endif
+      let engine = s:enginelist[a:index-1]
+      call s:search(s:text, engine)
+    endfunction
+
+    call popup_menu(s:enginelist, {
+      \ 'filter': function('s:bs_menu_filter'),
+      \ 'callback': function('s:bs_menu_handler'),
+      \ 'minheight': len(s:enginelist),
+      \ 'minwidth': max(map(deepcopy(s:enginelist), {_, val -> len(val)})),
+      \ 'title': 'Browser Search Engines',
+      \ 'drap': v:true,
+      \ 'resize': v:true,
+      \ 'scrollbar': 1,
+      \ })
+    return
+  endif
+
+  if s:has_float
+    let s:saved_cursor = &guicursor
+    let bufnr = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(bufnr, 0, -1, v:true, s:enginelist)
+    call nvim_buf_set_option(bufnr, 'modifiable', v:false)
+
+    let options = {
+      \ 'width': max(map(deepcopy(s:enginelist), {_, val -> len(val)})) + 2,
+      \ 'height': len(s:enginelist),
+      \ 'relative': 'cursor',
+      \ 'row': 0,
+      \ 'col': 0,
+      \ 'style': 'minimal',
+      \}
+    let s:winid = nvim_open_win(bufnr, v:true, options)
+    call nvim_win_set_option(s:winid, 'foldcolumn', '1')
+    call nvim_win_set_option(s:winid, 'cursorline', v:true)
+    call nvim_win_set_option(s:winid, 'winhl', 'Normal:Pmenu,FoldColumn:Pmenu,CursorLine:PmenuSel')
+    call nvim_win_set_cursor(s:winid, [engine_index+1, 0])
+
+    if has('nvim-0.5.0') && !empty(s:saved_cursor)
+      set guicursor+=a:ver1-Cursor/lCursor
+    endif
+
+    function! s:select_and_search() abort
+      let engine = s:enginelist[line('.') - 1]
+      call s:search(s:text, engine)
+      call s:close_menu()
+    endfunction
+
+    function! s:close_menu() abort
+      call nvim_win_close(s:winid, v:true)
+      if has('nvim-0.5.0') && !empty(s:saved_cursor)
+        let &guicursor = s:saved_cursor
+      endif
+    endfunction
+
+    mapclear <buffer>
+    nnoremap <nowait><buffer><silent> <CR>  :<C-u>call <SID>select_and_search()<CR>
+    nnoremap <nowait><buffer><silent> <Esc> :<C-u>call <SID>close_menu()<CR>
+    return
+  endif
+
+  let candidates = map(deepcopy(s:enginelist), { engine_index, val -> engine_index+1.'. '.val })
+  let select = inputlist(candidates) - 1
+  if select < 1 || select > len(candidates)
+    return
+  endif
+  let engine = s:enginelist[select]
+  call s:search(s:text, engine)
 endfunction

@@ -26,7 +26,6 @@ INSTALLATION                                      *browser-search-installation*
 With vim-plug
  >
     Plug 'voldikss/vim-browser-search'
-    :PlugInstall
 
 
 ==============================================================================
@@ -79,9 +78,12 @@ g:browser_search_engines                      *g:browser_search_engines*
 ==============================================================================
 COMMANDS                                            *browser-search-commands*
 
-Built-in commands ~
-    >
-    :Search [search engine] {text}     Search text (using specified search engine)
+:BrowserSearch [text]                               *BrowserSearch*
+
+    Search `text` with `engine`, if `text` is not given, use the word under
+    cursor.
+
+    Also, you can use this command in visual mode, i.e., `:'<,'>BrowserSearch`
 
 
 ==============================================================================
