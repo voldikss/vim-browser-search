@@ -27,6 +27,6 @@ if exists('g:browser_search_engines')
 endif
 
 nmap <silent> <Plug>SearchNormal  :set operatorfunc=search#search_normal<cr>g@
-vmap <silent> <Plug>SearchVisual  :<c-u>call search#search_visual('')<cr>
+vmap <silent> <Plug>SearchVisual  :<c-u>call search#search_visual()<cr>
 
 command! -nargs=* -range BrowserSearch call search#start(<q-args>, visualmode(), <range>)
