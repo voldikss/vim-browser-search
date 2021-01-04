@@ -119,7 +119,8 @@ function! search#start(text, visualmode, range) abort
   if s:has_float
     let s:saved_cursor = &guicursor
     let bufnr = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(bufnr, 0, -1, v:true, s:enginelist)
+    let candidates = map(deepcopy(s:enginelist), { engine_index, val -> engine_index+1.'. '.val })
+    call nvim_buf_set_lines(bufnr, 0, -1, v:true, candidates)
     call nvim_buf_set_option(bufnr, 'modifiable', v:false)
 
     let options = {
@@ -155,7 +156,11 @@ function! search#start(text, visualmode, range) abort
 
     mapclear <buffer>
     nnoremap <nowait><buffer><silent> <CR>  :<C-u>call <SID>select_and_search()<CR>
+    nnoremap <nowait><buffer><silent> l     :<C-u>call <SID>select_and_search()<CR>
     nnoremap <nowait><buffer><silent> <Esc> :<C-u>call <SID>close_menu()<CR>
+    for idx in range(len(s:enginelist))
+      execute printf('nmap <buffer><silent> %s :%s<CR><CR>', idx + 1, idx)
+    endfor
     return
   endif
 
