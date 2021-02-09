@@ -26,7 +26,7 @@ if exists('g:browser_search_engines')
   call extend(g:browser_search_builtin_engines, g:browser_search_engines)
 endif
 
-nmap <silent> <Plug>SearchNormal  :set operatorfunc=search#search_normal<cr>g@
+nmap <silent> <Plug>SearchNormal  :let g:browser_search_curpos = getpos('.') \| set operatorfunc=search#search_normal<cr>g@
 vmap <silent> <Plug>SearchVisual  :<c-u>call search#search_visual()<cr>
 
 command! -nargs=* -range BrowserSearch call search#start(<q-args>, visualmode(), <range>)

@@ -63,6 +63,7 @@ function! search#search_normal(visual_type) abort
   let text = @"
   let @" = reg_tmp
   call s:search(text, get(b:, 'browser_search_default_engine', g:browser_search_default_engine))
+  call setpos('.', g:browser_search_curpos)
 endfunction
 
 function! search#search_visual() abort
