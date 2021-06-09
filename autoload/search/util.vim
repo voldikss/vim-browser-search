@@ -45,10 +45,9 @@ function! search#util#show_msg(message, ...) abort
 endfunction
 
 function! search#util#trim(input, mask) abort
-  if exists('*trim')
-    return trim(a:input, a:mask)
-  endif
-  return a:input
+  let input = substitute(a:input, a:mask . '$', '', '')
+  let input = substitute(input, '^' . a:mask, '', '')
+  return input
 endfunction
 
 function! search#util#get_selected_text() abort
