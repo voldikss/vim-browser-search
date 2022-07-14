@@ -37,6 +37,8 @@ function! s:search(text, engine) abort
     let cmd = 'open ' . url
   elseif executable('xdg-open')
     let cmd = 'xdg-open ' . url
+  elseif executable('wslview')
+    let cmd = 'wslview ' . url
   else
     call search#util#show_msg('Browser was not found', 'error')
     return
