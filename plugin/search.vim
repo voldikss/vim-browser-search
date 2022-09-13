@@ -14,9 +14,12 @@ let g:browser_search_default_engine = get(g:, 'browser_search_default_engine', '
 let g:browser_search_builtin_engines = {
   \ 'baidu':'https://www.baidu.com/s?ie=UTF-8&wd=%s',
   \ 'bing': 'https://www.bing.com/search?q=%s',
+  \ 'ctan': 'https://ctan.org/search?phrase=%s',
+  \ 'cpan': 'https://metacpan.org/search?q=%s',
   \ 'duckduckgo': 'https://duckduckgo.com/?q=%s',
   \ 'github':'https://github.com/search?q=%s',
   \ 'google':'https://google.com/search?q=%s',
+  \ 'pypi':'https://pypi.org/search/?q=%s',
   \ 'stackoverflow':'https://stackoverflow.com/search?q=%s',
   \ 'translate': 'https://translate.google.com/?sl=auto&tl=it&text=%s',
   \ 'wikipedia': 'https://en.wikipedia.org/wiki/%s',
