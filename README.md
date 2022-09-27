@@ -54,6 +54,8 @@ Default:
   \ 'duckduckgo':    'https://duckduckgo.com/?q=%s',
   \ 'github':        'https://github.com/search?q=%s',
   \ 'google':        'https://google.com/search?q=%s',
+  \ 'mdn':           'https://developer.mozilla.org/en-US/search?q=%s',
+  \ 'npm':           'https://www.npmjs.com/search?q=%s',
   \ 'pypi':          'https://pypi.org/search/?q=%s',
   \ 'scholar':       'https://scholar.google.com/scholar?q=%s',
   \ 'stackoverflow': 'https://stackoverflow.com/search?q=%s',
