@@ -39,35 +39,7 @@ Defaut: `'google'`
 
 #### **`g:browser_search_engines`**
 
-Default:
-
-```vim
-  {
-  \ 'arxiv':          'https://arxiv.org/search/?query=%s&searchtype=all',
-  \ 'baidu':          'https://www.baidu.com/s?ie=UTF-8&wd=%s',
-  \ 'bing':           'https://www.bing.com/search?q=%s',
-  \ 'bilibili':       'https://search.bilibili.com/all?keyword=%s',
-  \ 'ctan':           'https://ctan.org/search?phrase=%s',
-  \ 'cpan':           'https://metacpan.org/search?q=%s',
-  \ 'csdn':           'https://so.csdn.net/so/search?q=%s',
-  \ 'dlbp':           'https://dblp.org/search?q=%s',
-  \ 'duckduckgo':     'https://duckduckgo.com/?q=%s',
-  \ 'github':         'https://github.com/search?q=%s',
-  \ 'google':         'https://google.com/search?q=%s',
-  \ 'luarocks':       'https://luarocks.org/search?q=%s',
-  \ 'mdn':            'https://developer.mozilla.org/en-US/search?q=%s',
-  \ 'npm':            'https://www.npmjs.com/search?q=%s',
-  \ 'packagecontrol': 'https://packagecontrol.io/search/%s',
-  \ 'pypi':           'https://pypi.org/search/?q=%s',
-  \ 'rubygems':       'https://rubygems.org/search?query=%s',
-  \ 'scholar':        'https://scholar.google.com/scholar?q=%s',
-  \ 'stackoverflow':  'https://stackoverflow.com/search?q=%s',
-  \ 'translate':      'https://translate.google.com/?sl=auto&tl=it&text=%s',
-  \ 'vimawesome':     'https://vimawesome.com/?q=%s',
-  \ 'wikipedia':      'https://en.wikipedia.org/wiki/%s',
-  \ 'youtube':        'https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch',
-  \ }
-```
+Default: See [here](assets/json/engines.json)
 
 ## Commands
 
