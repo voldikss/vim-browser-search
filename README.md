@@ -39,7 +39,7 @@ Defaut: `'google'`
 
 #### **`g:browser_search_engines`**
 
-Default: See [here](assets/json/engines.json)
+Default: See [assets/json/engines.json](assets/json/engines.json)
 
 ## Commands
 
@@ -49,3 +49,8 @@ Search `text` with `engine`, if `text` is not given, use the word under
 cursor.
 
 Also, you can use this command in visual mode, i.e., `:'<,'>BrowserSearch`
+
+## Contribution
+
+If you would like to add new engine supports, see
+[assets/json/engines.json](assets/json/engines.json).
