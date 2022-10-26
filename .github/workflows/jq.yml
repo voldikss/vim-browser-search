@@ -3,19 +3,21 @@
 on:
   push:
     paths:
-      - '**.json'
+      - ${{ github.paths }}
   pull_request:
     paths:
-      - '**.json'
+      - ${{ github.paths }}
+
+env:
+  paths: assets/json/*.json
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: docker://nanozoo/jq:1.6--0bafc15
       - name: Check if a json is sorted
         run: |
-          for json in assets/json/*.json ; do
+          for json in ${{ github.paths }} ; do
             diff <(jq -S . $json) $json || exit 1
           done
