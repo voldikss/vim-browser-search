@@ -26,6 +26,7 @@
   "luarocks": "https://luarocks.org/search?q=%s",
   "mdn": "https://developer.mozilla.org/en-US/search?q=%s",
   "msys2": "https://packages.msys2.org/search?q=%s",
+  "nixos": "https://search.nixos.org/packages?query=%s",
   "npm": "https://www.npmjs.com/search?q=%s",
   "packagecontrol": "https://packagecontrol.io/search/%s",
   "pypi": "https://pypi.org/search/?q=%s",
