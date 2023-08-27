@@ -11,6 +11,7 @@ function! s:search(text, engine) abort
   " Replace `\n`, preserve `\`
   let text = substitute(a:text, '\n', ' ', 'g')
   let text = substitute(text, '\\', '\\\', 'g')
+  let text = search#util#url_encode(text)
 
   " If selected text contains URL
   let url_in_text = matchstr(text, '\c\<\(\%([a-z][0-9A-Za-z_-]\+:\%(\/\{1,3}\|[a-z0-9%]\)\|www\d\{0,3}[.]\|[a-z0-9.\-]\+[.][a-z]\{2,4}\/\)\%([^ \t()<>]\+\|(\([^ \t()<>]\+\|\(([^ \t()<>]\+)\)\)*)\)\+\%((\([^ \t()<>]\+\|\(([^ \t()<>]\+)\)\)*)\|[^ \t`!()[\]{};:'."'".'".,<>?«»“”‘’]\)\)')
