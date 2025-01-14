@@ -37,6 +37,7 @@
   "scholar": "https://scholar.google.com/scholar?q=%s",
   "stackoverflow": "https://stackoverflow.com/search?q=%s",
   "translate": "https://translate.google.com/?sl=auto&tl=it&text=%s",
+  "typst": "https://typst.app/universe/search/?q=%s",
   "ubuntu": "https://packages.ubuntu.com/search?keywords=%s",
   "vimawesome": "https://vimawesome.com/?q=%s",
   "wikipedia": "https://en.wikipedia.org/wiki/%s",
