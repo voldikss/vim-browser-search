@@ -57,11 +57,11 @@ VARIABLES                                           *browser-search-variables*
 
 g:browser_search_default_engine               *g:browser_search_default_engine*
 
-    Defaut: `'google'`
+    Default: `'google'`
 
 g:browser_search_engines                      *g:browser_search_engines*
 
-    Defaut:
+    Default:
  >
     {
     \ 'google':'https://google.com/search?q=%s',
