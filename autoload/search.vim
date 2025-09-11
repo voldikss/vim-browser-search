@@ -163,7 +163,7 @@ function! search#start(text, visualmode, range) abort
     nnoremap <nowait><buffer><silent> l     :<C-u>call <SID>select_and_search()<CR>
     nnoremap <nowait><buffer><silent> <Esc> :<C-u>call <SID>close_menu()<CR>
     for idx in range(len(s:enginelist))
-      execute printf('nmap <buffer><silent> %s :%s<CR><CR>', idx + 1, idx)
+      execute printf('nmap <buffer><silent> %s :%s<CR><CR>', idx + 1, idx + 1)
     endfor
     return
   endif
