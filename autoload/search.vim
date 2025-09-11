@@ -6,6 +6,24 @@
 
 scriptencoding utf-8
 
+function! search#browse(url)
+  let url = a:url
+  if has('win32') || has('win64') || has('win32unix')
+    let cmd = 'rundll32 url.dll,FileProtocolHandler ' . url
+  elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
+    let cmd = 'open ' . url
+  elseif executable('xdg-open')
+    let cmd = 'xdg-open ' . url
+  elseif executable('wslview')
+    let cmd = 'wslview ' . url
+  elseif executable($BROWSER)
+    let cmd = $BROWSER . ' ' . url
+  else
+    let cmd = ''
+  endif
+  return cmd
+endf
+
 function! s:search(text, engine) abort
   let url = g:browser_search_builtin_engines[a:engine]
   " Replace `\n`, preserve `\`
@@ -31,21 +49,11 @@ function! s:search(text, engine) abort
   else
     let url = substitute(url, '\s', '\\ ', 'g')
   endif
-
-  if has('win32') || has('win64') || has('win32unix')
-    let cmd = 'rundll32 url.dll,FileProtocolHandler ' . url
-  elseif has('mac') || has('macunix') || has('gui_macvim') || system('uname') =~? '^darwin'
-    let cmd = 'open ' . url
-  elseif executable('xdg-open')
-    let cmd = 'xdg-open ' . url
-  elseif executable('wslview')
-    let cmd = 'wslview ' . url
-  else
+  let cmd = search#browse(url)
+  if cmd ==# ''
     call search#util#show_msg('Browser was not found', 'error')
     return
-  endif
-
-  if exists('*jobstart')
+  elseif exists('*jobstart')
     call jobstart(cmd)
   elseif exists('*job_start')
     call job_start(cmd)
