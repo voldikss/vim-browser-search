@@ -41,5 +41,6 @@
   "ubuntu": "https://packages.ubuntu.com/search?keywords=%s",
   "vimawesome": "https://vimawesome.com/?q=%s",
   "wikipedia": "https://en.wikipedia.org/wiki/%s",
-  "youtube": "https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch"
+  "youtube": "https://www.youtube.com/results?search_query=%s&page=&utm_source=opensearch",
+  "zhihu": "https://www.zhihu.com/search?type=content&q=%s"
 }
